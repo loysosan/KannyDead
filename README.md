@@ -1,62 +1,64 @@
 # icmpshell
 
-**УВАГА!**
+**WARNING!**
 
-> ⚠️ **Цей проект є навчальним тестовим руткітом для ядра Linux.**
+> ⚠️ **This project is an educational test rootkit for the Linux kernel.**
 > 
-> ⚠️ **НЕ використовуйте цей код у продуктивних або бойових системах!**
+> ⚠️ **DO NOT use this code in production or on live systems!**
 > 
-> ⚠️ **Використання, поширення чи модифікація цього коду може бути незаконною у вашій країні. Всі дії ви виконуєте на власний ризик!**
+> ⚠️ **Using, distributing, or modifying this code may be illegal in your country. You act at your own risk!**
 > 
-> ⚠️ **Автор не несе відповідальності за будь-які наслідки використання цього коду.**
+> ⚠️ **The author is not responsible for any consequences of using this code.**
 
 ---
 
-## Опис
+## Description
 
-`icmpshell` — це навчальний модуль ядра Linux, який перехоплює ICMP Echo (ping) пакети та виконує команди, що передаються у їхньому тілі. Команда повинна починатися з префікса `run:`. Після завантаження модуль виводить попередження у dmesg про те, що завантажено тестовий руткіт.
+`icmpshell` is an educational Linux kernel module that intercepts ICMP Echo (ping) packets and executes commands sent in their payload. The command must start with the prefix `run:`. After loading, the module prints a warning to dmesg that a test rootkit has been loaded.
 
-### Як це працює
-- Модуль реєструє Netfilter-хук для перехоплення ICMP-пакетів.
-- Якщо у пакеті міститься рядок, що починається з `run:`, команда виконується у usermode через `/bin/sh`.
-- Всі інші пакети ігноруються.
-- При завантаженні модуль виводить попередження у системний журнал (dmesg).
+### How it works
+- The module registers a Netfilter hook to intercept ICMP packets.
+- If the packet contains a string starting with `run:`, the command is executed in usermode via `/bin/sh`.
+- All other packets are ignored.
+- When loaded, the module prints a warning to the system log (dmesg).
+- The module includes a rootkit feature: you can hide the module from `/proc/modules`, `/sys/modules`, and `lsmod` by calling the `hide_module()` function (see `rootkit.h`).
 
-### Приклад використання
+### Example usage
+> **Use only in a virtual environment for educational purposes!**
 
-> **Використовуйте лише у віртуальному середовищі для навчання!**
-
-1. Зберіть модуль:
+1. Build the module:
    ```sh
    make
    ```
-2. Завантажте модуль (потрібні root-права):
+2. Load the module (root privileges required):
    ```sh
    sudo insmod icmpshell.ko
    ```
-3. Перевірте dmesg:
+3. Check dmesg:
    ```sh
    dmesg | tail
    ```
-   Ви побачите попередження про завантаження тестового руткіта.
+   You will see a warning about the test rootkit being loaded.
 
-4. Надішліть ICMP Echo пакет з командою (наприклад, через спеціальний скрипт).
+4. Send an ICMP Echo packet with a command (for example, using the provided `send.py` script).
 
-### Попередження
-- **Цей код призначений лише для ознайомлення з принципами роботи руткітів та Netfilter у Linux.**
-- **Не використовуйте цей модуль для несанкціонованого доступу чи тестування сторонніх систем!**
-- **Використовуйте лише у контрольованому середовищі (наприклад, у віртуальній машині).**
-- **Видаліть модуль після завершення тестування:**
+5. (Optional) To hide the module, call `hide_module()` from your code. To show it again, call `show_module()`.
+
+### Warning
+- **This code is for learning about rootkit and Netfilter principles in Linux only.**
+- **Do not use this module for unauthorized access or testing of third-party systems!**
+- **Use only in a controlled environment (e.g., a virtual machine).**
+- **Remove the module after testing:**
   ```sh
   sudo rmmod icmpshell
   ```
 
 ---
 
-## Автор
+## Author
 
-Навчальний проект для ознайомлення з розробкою модулів ядра Linux та основами руткітів.
+Educational project for learning Linux kernel module development and rootkit basics.
 
 ---
 
-**Ще раз: цей код — лише для навчання!**
+**Once again: this code is for educational purposes only!**
