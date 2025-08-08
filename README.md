@@ -1,3 +1,5 @@
+![Kenny](kenny.png)
+
 # icmpshell
 
 **WARNING!**
