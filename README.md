@@ -46,6 +46,46 @@
 
 5. (Optional) To hide the module, call `hide_module()` from your code. To show it again, call `show_module()`.
 
+---
+
+## send.py Script
+
+### Description
+
+The `send.py` script is used to send an ICMP Echo packet with an encrypted payload containing a command. The payload is encrypted using XOR with a key derived from an IP address. The script supports both local and NAT environments.
+
+### How it works:
+1. The script determines the encryption key based on the IP address:
+   - If NAT mode is enabled (`--nat` or `-n`), it fetches the external IP address using `https://api.ipify.org`.
+   - Otherwise, it uses the local IP address of the machine.
+2. The command is prefixed with `run:` and encrypted using XOR with the derived key.
+3. An ICMP Echo packet is sent to the target IP with the encrypted payload.
+4. If a response is received, it is displayed.
+
+### Usage
+
+```bash
+python3 send.py <TARGET_IP> "<COMMAND>" [--nat|-n]
+```
+
+#### Parameters:
+- `<TARGET_IP>`: The IP address of the target machine running the `icmpshell` module.
+- `<COMMAND>`: The command to execute on the target machine. Must be enclosed in quotes.
+- `[--nat|-n]`: Optional flag to enable NAT mode. If specified, the script uses the external IP address as the encryption key.
+
+#### Examples:
+1. Send a command using the local IP as the key:
+   ```bash
+   python3 send.py 192.168.1.100 "ls -la"
+   ```
+
+2. Send a command using the external IP as the key (NAT mode):
+   ```bash
+   python3 send.py 192.168.1.100 "ls -la" --nat
+   ```
+
+---
+
 ### Warning
 - **This code is for learning about rootkit and Netfilter principles in Linux only.**
 - **Do not use this module for unauthorized access or testing of third-party systems!**
