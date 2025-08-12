@@ -1,6 +1,6 @@
 ![Kenny](kenny.png)
 
-# icmpshell
+# KannyDead kernel base rootkit with icmp-shell
 
 **WARNING!**
 
@@ -23,7 +23,7 @@
 - If the packet contains a string starting with `run:`, the command is executed in usermode via `/bin/sh`.
 - All other packets are ignored.
 - When loaded, the module prints a warning to the system log (dmesg).
-- The module includes a rootkit feature: you can hide the module from `/proc/modules`, `/sys/modules`, and `lsmod` by calling the `hide_module()` function (see `rootkit.h`).
+- The module includes a rootkit feature: you can hide the module from `/proc/modules`, `/sys/modules`, and `lsmod` by calling the `hide_module()` function (see `kenny_rootkit.h`).
 
 ### Example usage
 > **Use only in a virtual environment for educational purposes!**
@@ -34,7 +34,7 @@
    ```
 2. Load the module (root privileges required):
    ```sh
-   sudo insmod icmpshell.ko
+   sudo insmod kenny.ko
    ```
 3. Check dmesg:
    ```sh
@@ -69,22 +69,9 @@ python3 send.py <TARGET_IP> "<COMMAND>" [--nat|-n]
 ```
 
 #### Parameters:
-- `<TARGET_IP>`: The IP address of the target machine running the `icmpshell` module.
+- `<TARGET_IP>`: The IP address of the target machine running the module.
 - `<COMMAND>`: The command to execute on the target machine. Must be enclosed in quotes.
 - `[--nat|-n]`: Optional flag to enable NAT mode. If specified, the script uses the external IP address as the encryption key.
-
-#### Examples:
-1. Send a command using the local IP as the key:
-   ```bash
-   python3 send.py 192.168.1.100 "ls -la"
-   ```
-
-2. Send a command using the external IP as the key (NAT mode):
-   ```bash
-   python3 send.py 192.168.1.100 "ls -la" --nat
-   ```
-
----
 
 ### Warning
 - **This code is for learning about rootkit and Netfilter principles in Linux only.**
@@ -92,7 +79,7 @@ python3 send.py <TARGET_IP> "<COMMAND>" [--nat|-n]
 - **Use only in a controlled environment (e.g., a virtual machine).**
 - **Remove the module after testing:**
   ```sh
-  sudo rmmod icmpshell
+  sudo rmmod kenny
   ```
 
 ---

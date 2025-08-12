@@ -1,11 +1,11 @@
 KERNELDIR:=/lib/modules/$(shell uname -r)/build
 
-obj-m = cannydead.o
-cannydead-objs = cannydead_main.o
+obj-m = kenny.o
+kenny-objs = kenny_main.o
 
-all: cannydead.ko
+all: kenny.ko
 
-cannydead.ko: cannydead_main.c
+kenny.ko: kenny_main.c
 	make -C $(KERNELDIR) M=$(PWD) modules
 
 clean:
