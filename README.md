@@ -42,17 +42,17 @@
    ```
    You will see a warning about the test rootkit being loaded.
 
-4. Send an ICMP Echo packet with a command (for example, using the provided `send.py` script).
+4. Send an ICMP Echo packet with a command (for example, using the provided `kanny_client.py` script).
 
 5. (Optional) To hide the module, call `hide_module()` from your code. To show it again, call `show_module()`.
 
 ---
 
-## send.py Script
+## kanny_client.py Script
 
 ### Description
 
-The `send.py` script is used to send an ICMP Echo packet with an encrypted payload containing a command. The payload is encrypted using XOR with a key derived from an IP address. The script supports both local and NAT environments.
+The `kanny_client.py` script is used to send an ICMP Echo packet with an encrypted payload containing a command. The payload is encrypted using XOR with a key derived from an IP address. The script supports both local and NAT environments.
 
 ### How it works:
 1. The script determines the encryption key based on the IP address:
@@ -65,7 +65,7 @@ The `send.py` script is used to send an ICMP Echo packet with an encrypted paylo
 ### Usage
 
 ```bash
-python3 send.py <TARGET_IP> "<COMMAND>" [--nat|-n]
+python3 kanny_client.py <TARGET_IP> "<COMMAND>" [--nat|-n]
 ```
 
 #### Parameters:
